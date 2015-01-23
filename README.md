@@ -18,7 +18,7 @@ Installation
 ------------
 
 ```bash
-$ git clone git@github.com:eko/flowbot.git
+$ go get -u github.com/eko/flowbot
 ```
 
 Run the robot
@@ -28,7 +28,7 @@ Run the robot
 $ go run app.go
 Connecting to Flowdock stream https://stream.flowdock.com/flows/[...]/[...]
 Connected! Start reading stream...
--> Command found: flowbot uptime
+-> Command found: flow uptime
 -> Chat message correctly sent.
 ```
 
@@ -58,14 +58,14 @@ func main() {
     flowbot.FlowdockAuthUsername = "<YOUR EMAIL ADDRESS>"
     flowbot.FlowdockAuthPassword = "<YOUR PASSWORD>"
 
-    flowbot.AddCommand("flowbot uptime", func (command flowbot.Command, entry flowbot.Entry) {
+    flowbot.AddCommand("flow uptime", func (command flowbot.Command, entry flowbot.Entry) {
         output, err := exec.Command("uptime").Output()
         if err != nil { panic(err) }
 
         flowbot.SendChat(fmt.Sprintf("My uptime: %s", output))
     })
 
-    flowbot.AddCommand("flowbot image (.*)", func (command flowbot.Command, entry flowbot.Entry) {
+    flowbot.AddCommand("flow image (.*)", func (command flowbot.Command, entry flowbot.Entry) {
         query := command.Pattern.FindStringSubmatch(entry.Content)[1]
 
         response, err := http.Get(fmt.Sprintf("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%s", query))
