@@ -93,7 +93,7 @@ func Stream() {
         for _, command := range commands  {
             if m, _ := regexp.MatchString(command.Pattern.String(), entry.Content); m {
                 fmt.Printf("-> Command: %s\n", entry.Content)
-                go command.Handler(command, entry)
+                command.Handler(command, entry)
                 break
             }
         }
