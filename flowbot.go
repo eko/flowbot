@@ -55,6 +55,14 @@ type Entry struct {
     CreatedAt   time.Time `json:"created_at"`
     Attachments []string  `json:"attachments"`
     User        int       `json:"user"`
+    ThreadId    string    `json:"thread_id,omitempty"`
+}
+
+// A Flowdock chat message
+type Chat struct {
+    Content          string `json:"content"`
+    ExternalUserName string `json:"external_user_name"`
+    ThreadId         string `json:"thread_id,omitempty"`
 }
 
 // Throws a panic error in case of err is defined
@@ -100,13 +108,29 @@ func Stream() {
     }
 }
 
-// Send a chat message to configured flowdock flow token
+// Send a chat message
 func SendChat(message string) {
-    parameters := map[string]string{
-        "content":            message,
-        "external_user_name": FlowdockRobotName,
+    parameters := Chat{
+        Content:          message,
+        ExternalUserName: FlowdockRobotName,
     }
 
+    sendChat(parameters)
+}
+
+// Send a chat message to a thread
+func SendThreadChat(threadId string, message string) {
+    parameters := Chat{
+        Content:          message,
+        ExternalUserName: FlowdockRobotName,
+        ThreadId:         threadId,
+    }
+
+    sendChat(parameters)
+}
+
+// Send a chat message to configured flowdock flow token
+func sendChat(parameters Chat) {
     jsonParameters, err := json.Marshal(parameters)
     check_error(err)
 
