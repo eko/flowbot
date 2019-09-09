@@ -54,7 +54,7 @@ type Entry struct {
     App         string    `json:"app"`
     CreatedAt   time.Time `json:"created_at"`
     Attachments []string  `json:"attachments"`
-    User        int       `json:"user"`
+    User        string    `json:"user"`
     ThreadId    string    `json:"thread_id,omitempty"`
 }
 
